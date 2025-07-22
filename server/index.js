@@ -26,7 +26,7 @@ app.use(cookieParser());
 // );
 app.use(
   cors({
-    origin: "https://test-client-p1qm.onrender.com/",
+    origin: "https://test-client-p1qm.onrender.com",
     credentials: true,
   })
 );
