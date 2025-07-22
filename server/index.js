@@ -16,24 +16,24 @@ const allowedOrigins = [
   "http://192.168.29.27:5173",
   "https://test-client-p1qm.onrender.com",
 ];
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  })
-);
 // app.use(
 //   cors({
-//     origin: "https://test-client-p1qm.onrender.com",
+//     origin: function (origin, callback) {
+//       if (!origin || allowedOrigins.includes(origin)) {
+//         callback(null, true);
+//       } else {
+//         callback(new Error("Not allowed by CORS"));
+//       }
+//     },
 //     credentials: true,
 //   })
 // );
+app.use(
+  cors({
+    origin: true, // dynamically reflect request origin
+    credentials: true, // allow cookies (if using HTTP-only JWT)
+  })
+);
 // Dummy user (replace with DB in real app)
 const dummyUser = {
   email: "test@example.com",
