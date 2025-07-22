@@ -30,8 +30,8 @@ const allowedOrigins = [
 // );
 app.use(
   cors({
-    origin: true, // dynamically reflect request origin
-    credentials: true, // allow cookies (if using HTTP-only JWT)
+    origin: "https://test-client-p1qm.onrender.com",
+    credentials: true,
   })
 );
 // Dummy user (replace with DB in real app)
