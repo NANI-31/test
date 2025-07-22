@@ -11,25 +11,29 @@ const JWT_SECRET = "your_jwt_secret_key"; // replace with env var in prod
 app.use(express.json());
 app.use(cookieParser());
 
-// const allowedOrigins = ["http://localhost:5173", "http://192.168.29.27:5173"];
-// app.use(
-//   cors({
-//     origin: function (origin, callback) {
-//       if (!origin || allowedOrigins.includes(origin)) {
-//         callback(null, true);
-//       } else {
-//         callback(new Error("Not allowed by CORS"));
-//       }
-//     },
-//     credentials: true,
-//   })
-// );
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://192.168.29.27:5173",
+  "https://test-client-p1qm.onrender.com",
+];
 app.use(
   cors({
-    origin: "https://test-client-p1qm.onrender.com",
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
+// app.use(
+//   cors({
+//     origin: "https://test-client-p1qm.onrender.com",
+//     credentials: true,
+//   })
+// );
 // Dummy user (replace with DB in real app)
 const dummyUser = {
   email: "test@example.com",
@@ -52,8 +56,8 @@ app.post("/login", (req, res) => {
     // Set token as HTTP-only cookie
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false, // true if HTTPS
-      sameSite: "Lax", // or "None" if using HTTPS and cross-site
+      secure: true, // true if HTTPS
+      sameSite: "None", // or "None" if using HTTPS and cross-site
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
 
@@ -66,6 +70,7 @@ app.post("/login", (req, res) => {
 // Middleware to protect routes
 function authenticateToken(req, res, next) {
   const token = req.cookies.token;
+  console.log(token);
   if (!token) return res.status(401).json({ error: "No token provided" });
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
@@ -77,6 +82,7 @@ function authenticateToken(req, res, next) {
 
 // Protected route example
 app.get("/protected", authenticateToken, (req, res) => {
+  console.log("logged");
   res.json({ message: "This is protected data.", user: req.user });
 });
 
