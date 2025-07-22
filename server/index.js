@@ -24,7 +24,12 @@ app.use(
     credentials: true,
   })
 );
-
+// app.use(
+// cors({
+// origin: "http://localhost:3000",
+// credentials: true,
+// })
+// );
 // Dummy user (replace with DB in real app)
 const dummyUser = {
   email: "test@example.com",
